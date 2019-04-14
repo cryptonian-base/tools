@@ -5,7 +5,6 @@
 #include "sha256.h"
 
 #define BLOCKNUM        5
-#define BLOCKNUM_MAX    10
 
 #define FILENAME_CHARARRAY  "chararray.inputs"
 
@@ -55,7 +54,7 @@ void resetHash(uint64_t *dst) {
 }
 
 
-BlockSchema* gBlockList[BLOCKNUM_MAX];
+BlockSchema* gBlockList[BLOCKNUM];
 
 BlockSchema* mineNewBlock(int height, BlockSchema* parent) {
     BlockSchema* newBlock = new BlockSchema;
