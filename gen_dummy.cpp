@@ -167,7 +167,7 @@ void writeSerializedInfo(char *data) {
 
         for(int i=0; i<(BLOCKNUM * sizeof(BlockSchema)); i++){
             if (i < ( 1 * sizeof(BlockSchema))                      // the First Block
-                    || i > ((BLOCKNUM-1) * sizeof(BlockSchema) -1 ))    // the Last Block
+                    || i >= ((BLOCKNUM-1) * sizeof(BlockSchema) ))    // the Last Block
                 writeFile << (uint32_t)(uint8_t) data[i] << "\n";
             else
                 privateFile << "echo " << (uint32_t)(uint8_t) data[i] << "\n"; 
