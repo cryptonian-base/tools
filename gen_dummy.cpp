@@ -6,7 +6,9 @@
 
 #define BLOCKNUM        5
 
-#define FILENAME_CHARARRAY  "chararray.inputs"
+#define FILE_PUBLIC_INPUNTS  "chainproof_aj.inputs"
+#define FILE_PRIVATE_INPUTS "exo2"
+
 
 #define BUFSIZE 512
 #define PACKETSIZE sizeof(MSG)
@@ -153,14 +155,26 @@ void serializeBlockchain(char *data) {
 }
 
 void writeSerializedInfo(char *data) {
-    string filename = FILENAME_CHARARRAY;
+    string filename = FILE_PUBLIC_INPUNTS;
     ofstream writeFile(filename.data());
 
-    if(writeFile.is_open()) {
+    string prvfile = FILE_PRIVATE_INPUTS;
+    ofstream privateFile(prvfile.data());
+
+    if(writeFile.is_open() && privateFile.is_open() ) {
+        // #1. block count
+        writeFile << BLOCKNUM << "\n";
+
         for(int i=0; i<(BLOCKNUM * sizeof(BlockSchema)); i++){
-            writeFile << (uint32_t)(uint8_t) data[i] << "\n";
+            if (i < ( 1 * sizeof(BlockSchema))                      // the First Block
+                    || i > ((BLOCKNUM-1) * sizeof(BlockSchema) -1 ))    // the Last Block
+                writeFile << (uint32_t)(uint8_t) data[i] << "\n";
+            else
+                privateFile << "echo " << (uint32_t)(uint8_t) data[i] << "\n"; 
         }
+
         writeFile.close();
+        privateFile.close();
     }
 }
 
